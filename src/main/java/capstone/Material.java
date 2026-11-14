@@ -1,37 +1,46 @@
 package capstone;
+
+/** A material line item: a unit cost and how many units the project needs. */
 public class Material {
 
-    //fields describing what were naming in this class
+    private final String name;
+    private final double unitCost;
+    private final double quantity;
 
-    private String itemname;
-    private Double unitCost;
-    private Double quantity;
-
-    //constructor
-    public Material (String name, double unitCost, double quantity) {
-        this.itemname = name;
+    public Material(String name, double unitCost, double quantity) {
+        if (name == null || name.isBlank()) {
+            throw new IllegalArgumentException("name must not be blank");
+        }
+        if (unitCost < 0) {
+            throw new IllegalArgumentException("unitCost must not be negative");
+        }
+        if (quantity < 0) {
+            throw new IllegalArgumentException("quantity must not be negative");
+        }
+        this.name = name;
         this.unitCost = unitCost;
         this.quantity = quantity;
     }
 
-    //methods used this here are to calculate costs
+    /** Unit cost times quantity. */
     public double calculateTotalCost() {
         return unitCost * quantity;
     }
 
-
-    //getter here were gonna now make it able to display the materilas we classified as private in the fileds
-
     public String getName() {
-        return itemname;
+        return name;
     }
 
     public double getUnitCost() {
         return unitCost;
     }
 
-    public double  getQuantity() {
+    public double getQuantity() {
         return quantity;
     }
 
+    @Override
+    public String toString() {
+        return String.format("%s: %,.2f x %,.2f = %,.2f", name, quantity, unitCost, calculateTotalCost());
+    }
 }
